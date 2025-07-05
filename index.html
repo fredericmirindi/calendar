@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Activity Calendar</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container flex items-center justify-between">
+            <div class="logo">
+                <h1>📅 MyCalendar</h1>
+            </div>
+            <nav class="nav">
+                <div class="view-switcher">
+                    <button class="btn btn--sm view-btn active" data-view="month">Month</button>
+                    <button class="btn btn--sm view-btn" data-view="week">Week</button>
+                    <button class="btn btn--sm view-btn" data-view="day">Day</button>
+                    <button class="btn btn--sm view-btn" data-view="timeline">Timeline</button>
+                </div>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn--sm btn--outline" id="todayBtn">Today</button>
+                <button class="btn btn--sm btn--primary" id="addActivityBtn">
+                    <i class="fas fa-plus"></i> Add Activity
+                </button>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="calendar-layout">
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Dashboard -->
+                    <div class="card dashboard-card">
+                        <div class="card__header">
+                            <h3>Today's Overview</h3>
+                            <span class="date-display" id="todayDate"></span>
+                        </div>
+                        <div class="card__body">
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="todayActivities">0</div>
+                                    <div class="stat-label">Activities</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="completedActivities">0</div>
+                                    <div class="stat-label">Completed</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="totalHours">0h</div>
+                                    <div class="stat-label">Total Time</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Habits -->
+                    <div class="card habits-card">
+                        <div class="card__header">
+                            <h3>Daily Habits</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="habits-list" id="habitsList">
+                                <!-- Habits will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Goals -->
+                    <div class="card goals-card">
+                        <div class="card__header">
+                            <h3>Goals Progress</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="goals-list" id="goalsList">
+                                <!-- Goals will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mini Calendar -->
+                    <div class="card mini-calendar-card">
+                        <div class="card__header">
+                            <h3>Quick Navigation</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="mini-calendar" id="miniCalendar">
+                                <!-- Mini calendar will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Calendar Main Area -->
+                <div class="calendar-main">
+                    <!-- Calendar Header -->
+                    <div class="calendar-header">
+                        <div class="calendar-navigation">
+                            <button class="btn btn--sm btn--outline nav-btn" id="prevBtn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <h2 class="current-month" id="currentMonth">July 2025</h2>
+                            <button class="btn btn--sm btn--outline nav-btn" id="nextBtn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <div class="calendar-filters">
+                            <select class="form-control category-filter" id="categoryFilter">
+                                <option value="">All Categories</option>
+                                <option value="Work">💼 Work</option>
+                                <option value="Health">🏃 Health</option>
+                                <option value="Learning">📚 Learning</option>
+                                <option value="Social">👥 Social</option>
+                                <option value="Hobbies">🎨 Hobbies</option>
+                                <option value="Personal">🏠 Personal</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Grid -->
+                    <div class="calendar-container">
+                        <div class="calendar-grid" id="calendarGrid">
+                            <!-- Calendar will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Activity Modal -->
+    <div class="modal" id="activityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Activity</h3>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="activityForm">
+                    <div class="form-group">
+                        <label class="form-label" for="activityTitle">Activity Title</label>
+                        <input type="text" class="form-control" id="activityTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="activityCategory">Category</label>
+                        <select class="form-control" id="activityCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Work">💼 Work</option>
+                            <option value="Health">🏃 Health</option>
+                            <option value="Learning">📚 Learning</option>
+                            <option value="Social">👥 Social</option>
+                            <option value="Hobbies">🎨 Hobbies</option>
+                            <option value="Personal">🏠 Personal</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="activityDate">Date</label>
+                            <input type="date" class="form-control" id="activityDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="activityTime">Time</label>
+                            <input type="time" class="form-control" id="activityTime" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="activityDuration">Duration (minutes)</label>
+                            <input type="number" class="form-control" id="activityDuration" min="15" step="15" value="60">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="activityPriority">Priority</label>
+                            <select class="form-control" id="activityPriority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="activityLocation">Location (optional)</label>
+                        <input type="text" class="form-control" id="activityLocation" placeholder="Enter location">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="activityNotes">Notes (optional)</label>
+                        <textarea class="form-control" id="activityNotes" rows="3" placeholder="Add any notes"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="activityRecurring">
+                            <span class="checkmark"></span>
+                            Recurring Activity
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--outline" id="cancelBtn">Cancel</button>
+                <button class="btn btn--primary" id="saveActivityBtn">Save Activity</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Focus Timer Modal -->
+    <div class="modal" id="focusTimerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Focus Timer</h3>
+                <button class="modal-close" id="closeFocusTimer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="timer-display">
+                    <div class="timer-circle">
+                        <div class="timer-time" id="timerTime">25:00</div>
+                    </div>
+                    <div class="timer-controls">
+                        <button class="btn btn--primary timer-btn" id="startTimer">
+                            <i class="fas fa-play"></i> Start
+                        </button>
+                        <button class="btn btn--outline timer-btn" id="pauseTimer">
+                            <i class="fas fa-pause"></i> Pause
+                        </button>
+                        <button class="btn btn--outline timer-btn" id="resetTimer">
+                            <i class="fas fa-refresh"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
